@@ -26,6 +26,20 @@ phonebook = [
 ]
 
 app.use(express.json())
+const morgan = require('morgan')
+const morgan_logger = morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ')
+})
+app.use(morgan_logger)
+
+
+
 
 app.get('/api/persons', (req, res) => {
     res.json(phonebook)
@@ -112,3 +126,5 @@ const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on PORT ${PORT}`)
 })
+
+
