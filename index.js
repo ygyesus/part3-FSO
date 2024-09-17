@@ -2,6 +2,22 @@
 const express = require('express')
 const app = express()
 
+const morgan = require('morgan')
+morgan.token('type', function (req, res) { return req.headers['content-type'] })
+morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+
+const morgan_logger = morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms',
+    tokens.type(req, res),
+    tokens.body(req,res)
+  ].join(' ')
+})
+
 phonebook = [
     {
       "id": "1",
@@ -26,20 +42,7 @@ phonebook = [
 ]
 
 app.use(express.json())
-const morgan = require('morgan')
-const morgan_logger = morgan(function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
-})
 app.use(morgan_logger)
-
-
-
 
 app.get('/api/persons', (req, res) => {
     res.json(phonebook)
