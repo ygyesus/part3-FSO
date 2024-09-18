@@ -1,10 +1,12 @@
 
 const express = require('express')
 const app = express()
-
+const cors = require('cors')
 const morgan = require('morgan')
+
 morgan.token('type', function (req, res) { return req.headers['content-type'] })
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
+
 
 const morgan_logger = morgan(function (tokens, req, res) {
   return [
@@ -40,6 +42,7 @@ phonebook = [
       "number": "39-23-6423122"
     }
 ]
+app.use(cors())
 
 app.use(express.json())
 app.use(morgan_logger)
@@ -75,7 +78,7 @@ const generateId = () => {
     number = number + 1             //  [1,10001)
     number = Math.floor(number)     //  [1,10000]
 
-    return number
+    return String(number)
 }
 
 app.post('/api/persons', (req, res) => {
@@ -121,7 +124,6 @@ app.post('/api/persons', (req, res) => {
 app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id
     phonebook = phonebook.filter(person => person.id !== id)
-    console.log(phonebook)
 })
 
 const PORT = 3001
