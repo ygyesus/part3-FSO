@@ -13,8 +13,7 @@ const number = process.argv.length > 3 ? process.argv[4]
     : null
 
 
-const url =
-  `mongodb+srv://${username}:${password}@cluster0.yn4yh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const url = process.env.MONGODB_URI
 
 
 // const url = 'mongodb://localhost:27017/phonebook';
