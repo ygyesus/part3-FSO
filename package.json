@@ -6,7 +6,6 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "build:ui": "rm -rf dist && cd ../part2-persons && npm run build && cp -r dist ../part3-FSO",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -17,6 +16,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
+    "mongoose": "^8.6.3",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.4"
   }
